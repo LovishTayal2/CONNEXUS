@@ -1,0 +1,356 @@
+<html>
+
+<head>
+    <title>Inf-Prof</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script>
+    function doPrev(filectrl, prev) {
+        var [file] = filectrl.files;
+        if (file) {
+            prev.src = URL.createObjectURL(file);
+        }
+    }
+</script>
+
+
+<script>
+$(document).ready(function()
+{
+    let active = localStorage.getItem("activeUser");
+    $("#txtemailid").val(active).prop("readonly",true);
+    if(localStorage.getItem("activeUser")==null)
+            {
+                location.href="index.html";
+                return;
+            }
+
+           // alert(active);
+           $("#btnlogout").click(function()
+           {
+            localStorage.removeItem("activeUser");
+            location.href="index.html"
+           })
+
+           let obj={
+            type:"get",
+            url:"/chk-if-present",
+            data:{
+                txtemailid:$("#txtemailid").val()
+            }
+           }
+           $.ajax(obj).done(function(resp)
+           {
+            if(resp=="Found")
+            {
+                $("#btnsearch").prop("disabled",false);
+                $("#btnsave").prop("disabled",true);
+                $("#btnupdate").prop("disabled",false);
+
+            }
+           }).fail(function(err)
+           {
+            alert(err.statusText);
+           })
+
+    $("#cno").keyup(function () {
+        var regex = /^(?:(?:\+|0{0,2})91(\s*[\-]\s*)?|[0]?)?[789]\d{9}$/;
+        let phone = $("#cno").val();
+        if (regex.test(phone) == true) {
+            $("#sp").html("Valid Number");
+        }
+        else
+            $("#sp").html("Invalid Number");
+
+    })
+    $(document).ajaxStart(function()
+    {
+        $("#bg").css("display","block")
+        $("#wait").css("display","block");
+    })
+    $(document).ajaxStop(function()
+    {
+       $("#wait").css("display","none");
+        $("#bg").css("display","none");
+    })
+    $("#btnsearch").click(function()
+    {  
+        let obj = {
+            type:"get",
+            url:"/find-inf-details",
+            data:{
+                txtemailid : $("#txtemailid").val()
+
+            }
+        }
+        $.ajax(obj).done(function(jsonAry)
+        {
+            if(jsonAry.length==0)
+            {
+                alert("Details not Registered ");
+                return;
+            }
+           // alert(jsonAry[0].ifields.split(","));
+            
+           //alert(JSON.stringify(jsonAry));
+           $("#txtname").val(jsonAry[0].name);
+           $("#prev").prop("src","uploads/"+jsonAry[0].picpath);
+           $("#hdn").val(jsonAry[0].picpath);
+           $("#gender").val(jsonAry[0].gender);
+           $("#txtcity").val(jsonAry[0].city);
+           $("#txtadd").val(jsonAry[0].address);
+           $("#cno").val(jsonAry[0].contact);
+           $("#db").val(jsonAry[0].dob);
+           $("#fields").val(jsonAry[0].ifields.split(","));
+          
+           $("#txtig").val(jsonAry[0].insta);
+           $("#txtfb").val(jsonAry[0].facebook);
+           $("#txtyt").val(jsonAry[0].youtube);
+           $("#txtother").val(jsonAry[0].other);
+
+          
+
+
+        })
+        .fail(function(err)
+        {
+            alert(err.statusText);
+        })
+    })
+})    
+</script>
+<style>
+    .fs-5
+    {
+        color:green;
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        
+    }
+    #wait{
+        position: absolute;
+        width: 100px;
+        height: 100px;
+        background-image: url(pics/roll.gif);
+        background-size: contain;
+        border-radius: 50%;
+        top:40%;
+        left:40%;
+        border: 3px black solid;
+        display: none;
+    }
+    #bg
+    {
+        width: 100%;
+        height: 100%;
+        background-color: gainsboro;
+        display: none;
+        position: absolute;
+        opacity: .5;
+    }
+    span
+    {
+        color: red;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+</style>
+</head>
+
+
+<body style="background-color: lightgrey;">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top">
+       
+
+        <img src="pics/conn.webp" style="width: 50px; height: 50px; border-radius: 50%;">
+        <font
+        style="font-size: 30px;font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; color: darkblue;">
+        <center>
+           <b>&nbsp; &nbsp;CONNEXUS</b> 
+        </center>
+    </font> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
+        <button type="button" class="btn btn-outline-danger" id="btnlogout" name="btnlogout">Log Out</button>
+
+</nav><br><br><br>
+    <div id="bg"></div>
+    <div id="wait"></div>
+
+
+    <center style="font-weight: bolder; font-size:30px  ; color:blue; font-family:Verdana, Geneva, Tahoma, sans-serif">
+        <div class="row bg-success text-white fs-4">
+            <center>
+                Influencer Profile
+               
+            </center>
+        </div>
+    </center>
+    <br>
+
+
+    <form method="post" enctype="multipart/form-data"
+    style=" border: 6px black solid; width:1200px; margin: auto; height: 650px;background-color:white ">
+        <input type="hidden" name="hdn" id="hdn">
+        <div class="row">
+            <div class="col-md-3 offset-md-1">
+                <div class="row fs-5">
+                    &nbsp; &nbsp;Email-Id
+
+                </div>
+                <input type="text" class="form-control" placeholder="abc@gmail.com" id="txtemailid" name="txtemailid">
+            </div>
+            <div class="col-md-3" >
+                <input type="button" class="btn btn-info" style="margin-top: 35px;" id="btnsearch" value="Search">
+            </div>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="col-md-4" style="margin-left:5px">
+                <img src="" width="100" height="100" id="prev" alt="Not Uploaded" style="border-radius: 50%;"><br>
+                Profile Pic:<input type="file" name="ppic" id="filectrl" onchange="doPrev(filectrl,prev);">
+
+
+
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-3 offset-md-1">
+                <div class="row fs-5">
+                    &nbsp; &nbsp;Name
+
+                </div>
+                <input type="text" class="form-control" placeholder="Enter name" id="txtname" name="txtname" required>
+            </div>
+            <div class="col-md-3">
+                <div class="row fs-5">
+                    &nbsp; &nbsp;Gender
+
+                </div>
+                <select name="gender" id="gender" class="form-select" required>
+                    <option value="Choose">Choose</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <div class="row fs-5">
+                    &nbsp; &nbsp;Date of Birth
+
+                </div>
+                <input type="date" id="db" name="db" class="form-control"  required>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3 offset-md-1">
+                <div class="row fs-5" style="margin-top: 4px;">
+                    &nbsp; &nbsp;Address
+
+                </div>
+                <input type="text" class="form-control" placeholder="Enter address" id="txtadd" name="txtadd" required>
+            </div>
+            <div class="col-md-3">
+                <div class="row fs-5" style="margin-top: 4px;">
+                    &nbsp; &nbsp;City
+
+                </div>
+                <input type="text" class="form-control" placeholder="Enter city" id="txtcity" name="txtcity" required>
+
+            </div>
+            <div class="col-md-2">
+                <div class="row fs-5" style="margin-top: 4px;">
+                    &nbsp; &nbsp;Contact Number
+
+                </div>
+                <input type="text" class="form-control" placeholder="Cont. No" id="cno" name="cno" required>
+                <span id="sp"></span>
+            </div>
+        </div>
+
+
+
+        <div class="row">
+            <div class="col-md-2 offset-md-1">
+                <div class="row fs-5" style="margin-top: 6px;">
+                    &nbsp; &nbsp;Fields
+                </div>
+                <select multiple size="4" name="fields" id="fields" class="form-control"  required>
+                    
+                    <option value="Fitness">Fitness</option>
+                    <option value="Business">Business</option>
+                    <option value="Beauty">Beauty</option>
+                    <option value="Fashion">Fashion</option>
+                    <option value="Video Game">Video Game</option>
+                    <option value="Parenting">Parenting</option>
+                    <option value="Sports">Sports</option>
+                    <option value="Food">Food</option>
+                    <option value="Bloggers">Bloggers</option>
+                    <option value="Internet Celebrity">Internet Celebrity</option>
+                    <option value="Travel">Travel</option>
+                    <option value="Gaming">Gaming</option>
+                    <option value="Music">Music</option>
+                    <option value="Tech">Tech</option>
+                    <option value="Photographer">Photographer</option>
+
+                </select>
+            </div>
+            <div class="col-md-2">
+                <div class="row fs-5" style="margin-top: 8px;">
+                    &nbsp; &nbsp;Instagram Account
+
+                </div>
+                <input type="text" class="form-control" placeholder="Enter link" id="txtig" name="txtig" required>
+
+            </div>
+
+            <div class="col-md-2">
+                <div class="row fs-5" style="margin-top: 8px;">
+                    &nbsp; &nbsp;Facebook Account
+
+                </div>
+                <input type="text" class="form-control" placeholder="Enter link" id="txtfb" name="txtfb" required>
+
+            </div>
+
+            <div class="col-md-2">
+                <div class="row fs-5" style="margin-top: 8px;">
+                    &nbsp; &nbsp;Youtube Account
+
+                </div>
+                <input type="text" class="form-control" placeholder="Enter link" id="txtyt" name="txtyt" required>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3 offset-md-1">
+                <div class="row fs-5" style="margin-top: 8px;">
+                    &nbsp; &nbsp;Other Information
+
+                </div>
+                <textarea rows="5" cols="20" id="txtother" name="txtother" class="form-control">
+
+                </textarea>
+            </div>
+            <div class="col-md-1">
+                <button type="submit" class="btn btn-success" id="btnsave" style="margin-top: 150px; "
+                    formaction="/save-inf-profile">Save</button>
+
+            </div>
+
+            <div class="col-md-1">
+                <button type="submit" class="btn btn-warning" id="btnupdate" style="margin-top: 150px;"
+                    formaction="profile-update">Update</button>
+
+            </div>
+
+        </div>
+
+    </form>
+
+
+</body>
+
+</html>

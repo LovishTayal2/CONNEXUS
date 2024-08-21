@@ -1,0 +1,397 @@
+<html>
+
+<head>
+    <title>Inf-Dash</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script>
+
+
+        $(document).ready(function () {
+            let active = localStorage.getItem("activeUser");
+            $("#txteid").val(active).prop("readonly",true)
+            $("#eid").val(active).prop("readonly",true)
+            if(localStorage.getItem("activeUser")==null)
+            {
+                location.href="index.html";
+                return;
+            }
+
+           // alert(active);
+           $("#btnlogout").click(function()
+           {
+            localStorage.removeItem("activeUser");
+            location.href="index.html"
+           })
+
+           $("#newpwd").keyup(function () {
+            var re = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,}$/;
+            let psa = $("#newpwd").val();
+            if (re.test(psa) == true)
+                $("#msgnew").html("Strong Pwd");
+            else
+                $("#msgnew").html("Weak Pwd");
+
+
+        });
+
+        $("#rptpwd").keyup(function () {
+            var re = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,}$/;
+            let psa = $("#rptpwd").val();
+            if (re.test(psa) == true)
+                $("#msgrpt").html("Strong Pwd");
+            else
+                $("#msgrpt").html("Weak Pwd");
+
+
+        });
+            $("#dash").html("Hi: "+active);
+            //-----Password--------------
+            $("#btnset").click(function () {
+                let obj = {
+                    type: "get",
+                    url: "/settings-update",
+                    data: {
+                        eid : $("#eid").val(),
+                        oldpwd : $("#oldpwd").val(),
+                        newpwd : $("#newpwd").val(),
+                        rptpwd : $("#rptpwd").val()
+
+
+
+                    }
+                }
+                $.ajax(obj).done(function (resp) {
+                    $("#msgupdateset").html(resp);
+
+                })
+                    .fail(function (err) {
+                        alert(err.statusText);
+                    })
+
+            })
+
+            $("#btnpost").click(function()
+            {
+                let obj = {
+                    type: "get",
+                    url: "/post-event",
+                    data: {
+                        txteid: $("#txteid").val(),
+                        txttitle: $("#txttitle").val(),
+                        eventdate: $("#eventdate").val(),
+                        txttime: $("#txttime").val(),
+                        txtcity: $("#txtcity").val(),
+                        txtvenue: $("#txtvenue").val(),
+
+                    }
+                }
+                $.ajax(obj).done(function (resp) {
+                    $("#msgbook").html(resp);
+
+                })
+                    .fail(function (err) {
+                        alert(err.statusText);
+                    })
+
+            })
+        })
+    </script>
+    <style>
+        .fs-5 {
+            color: rgb(7, 95, 7);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .card {
+            border: 4px black solid;
+        
+        }
+        #dash
+        {
+            font-size: 26px;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            color: darkblue;
+        }
+        span
+        {
+            color: red;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+    </style>
+</head>
+
+<body >
+    <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top">
+       
+
+        <img src="pics/conn.webp" style="width: 50px; height: 50px; border-radius: 50%;">
+        <font
+            style="font-size: 30px;font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; color: darkblue;">
+            <center>
+                <b>&nbsp; &nbsp;CONNEXUS</b>
+            </center>
+           
+        </font>
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
+        <button type="button" class="btn btn-outline-danger" id="btnlogout" name="btnlogout">Log Out</button>
+        
+
+</nav><br><br><br>
+    <div class="row bg-success text-white fs-1">
+        <center>
+            Influencer Dashboard
+           
+        </center>
+    </div>
+    <br>
+   <center><b><span id="dash"></span></b></center> 
+
+    <div class="row" style="margin-top: 20px;">
+        <div class="col-md-10 offset-md-1">
+            <div class="row">
+                <!-----------------C-1----(Inf-Profile)------------------------------>
+                <div class="col-md-3">
+                    <div class="card">
+                        <img src="pics/profile.jpeg" class="card-img-top" width="300" height="300">
+                        <div class="card-body">
+                            <center>
+                                <a href="/Inf-Prof">
+                                    <button type="submit" class="btn btn-primary">Profile</button>
+
+                                </a>
+                            </center>
+                        </div>
+                    </div>
+                </div>
+                <!---------------C-2--------(Post Bookings)----------------------------------------------------------------------------->
+                <div class="col-md-3">
+                    <div class="card">
+                        <img src="pics/post.jpg" class="card-img-top" width="300" height="300" alt="...">
+                        <div class="card-body">
+                            <center>
+
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                    data-bs-target="#modalbooking">Post Bookings</button>
+                            </center>
+                        </div>
+                    </div>
+                </div>
+                <!-------------------------C-3------------------------------>
+                <div class="col-md-3">
+                    <div class="card">
+                        <img src="pics/event-man.jpg" class="card-img-top" width="300" height="300" alt="...">
+                        <div class="card-body">
+                            <center>
+                                <a href="\event-manager" class="btn btn-warning">Event Manager</a>
+                               
+                            </center>
+
+                        </div>
+                    </div>
+                </div>
+                <!--------------------------C-4-------------------------------->
+                <div class="col-md-3">
+                    <div class="card">
+                        <img src="pics/settings.avif" class="card-img-top" width="300" height="300" alt="...">
+                        <div class="card-body">
+                            <center>
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                    data-bs-target="#modalsettings">Settings</button>
+                            </center>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!---------------------Post Bookings------------------------------------------>
+    <div id="modalbooking" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+
+                    <h5 class="modal-title"
+                        style="font-size: 30px; font-family: Georgia, 'Times New Roman', Times, serif; color: darkblue;">
+
+                        Post Bookings
+
+                    </h5>
+
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form>
+                    <div class="row">
+                        <div class="col-md-9 offset-md-1">
+                            <div class="row fs-5">
+                                &nbsp; &nbsp;&nbsp; &nbsp;Email-Id
+
+                            </div>
+                            <input type="text" class="form-control" placeholder="abc@gmail.com" id="txteid"
+                                name="txteid">
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top:10px ;">
+                        <div class="col-md-6 offset-md-1">
+                            <div class="row fs-5">
+                                &nbsp; &nbsp;&nbsp;&nbsp; &nbsp;Event Title
+
+                            </div>
+                            <input type="text" class="form-control" placeholder="Event title" id="txttitle"
+                                name="txttitle">
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row fs-5">
+                                &nbsp; Date of Event
+
+                            </div>
+                            <input type="date" id="eventdate" class="form-control" name="eventdate">
+                        </div>
+
+                    </div>
+
+                    <div class="row" style="margin-top:10px ;">
+                        <div class="col-md-6 offset-md-1">
+                            <div class="row fs-5">
+                                &nbsp; &nbsp;&nbsp;Start Time
+
+                            </div>
+                            <input type="time" id="txttime"  class="form-control" name="txttime">
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row fs-5" style="margin-top: -3px;">
+                                &nbsp; City
+
+                            </div>
+                            <input type="text" class="form-control" placeholder="City/Place" id="txtcity"
+                                name="txtcity">
+
+                        </div>
+
+
+                    </div>
+
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-md-9 offset-md-1">
+                            <div class="row fs-5">
+                                &nbsp; &nbsp; Venue
+                            </div>
+                            <input type="text" class="form-control" placeholder="Venue" id="txtvenue" name="txtvenue">
+
+                        </div>
+                    </div>
+                    <br>
+                    <center>
+                        <!---------------------Post Event Button--------------------------------------->
+                        <button type="button" class="btn btn-success" id="btnpost">Post Event</button><br>
+                        <span id="msgbook"></span>
+                    </center>
+
+
+
+
+
+
+                </form>
+
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!--------------------------Settings------------------------------------------------->
+
+    <div id="modalsettings" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" style="font-family:Georgia, 'Times New Roman', Times, serif; font-size: 30px; color: darkblue;">
+                        Settings</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form>
+                    <div class="row">
+                        <div class="col-md-8 offset-md-1">
+                            <div class="row fs-5">
+                               &nbsp;&nbsp;&nbsp; Email Id
+                            </div>
+                            <input type="text" class="form-control" placeholder="abc@gmail.com" id="eid" name="eid">
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-8 offset-md-1">
+                            <div class="row fs-5">
+                               &nbsp;&nbsp;&nbsp; Old Password
+                            </div>
+                            <input type="password" class="form-control" placeholder="Old Password" id="oldpwd" name="oldpwd">
+                            
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-8 offset-md-1">
+                            <div class="row fs-5">
+                               &nbsp;&nbsp; New Password
+                            </div>
+                            <input type="password" class="form-control" placeholder="New Password" id="newpwd" name="newpwd">
+                            <span id="msgnew"></span>
+                            
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-8 offset-md-1">
+                            <div class="row fs-5">
+                               &nbsp;&nbsp;&nbsp; Confirm Password
+                            </div>
+                            <input type="password" class="form-control" placeholder="Repeat Password" id="rptpwd" name="rptpwd">
+                            <span id="msgrpt"></span>
+                        </div>
+                    </div>
+                    <br>
+                    <!---------------Update Password button----------------------------->
+                    <center>
+                        <button type="button" class="btn btn-success" id="btnset">Update</button><br>
+                        <span id="msgupdateset"></span>
+                    </center>
+                    
+                </form>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

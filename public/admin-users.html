@@ -1,0 +1,155 @@
+<html>
+
+<head>
+    <title>Admin-Users</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <script>
+        var module = angular.module("myModule", []);
+        var controller = module.controller("myController", function ($scope, $http) {
+            $scope.jsonArrayAll;
+            //-----------------------------------
+            $scope.getAllUsers = function () {
+                let url = "/fetch-all-users";
+                $http.get(url).then(allIsWell, notWell);
+                function allIsWell(response) {
+                    //alert(JSON.stringify(response.data));
+                    $scope.jsonArrayAll = response.data;
+                }
+                function notWell(err) {
+                    alert(err)
+                }
+            }
+            //--------Block-Users----------------------------
+
+            $scope.doBlock = function (email) {
+
+                let url = "/block-users?email=" + email;
+                $http.get(url).then(allIsWell, notWell);
+                function allIsWell(response) {
+                   // alert(response.data);
+                    $scope.getAllUsers();
+                    
+                }
+                function notWell(err) {
+                    alert(err)
+                }
+            }
+            //----------Resume-Users-----------
+
+            $scope.doResume = function (email) {
+
+                let url = "/resume-users?email=" + email;
+                $http.get(url).then(allIsWell, notWell);
+                function allIsWell(response) {
+                   // alert(response.data);
+                    $scope.getAllUsers();
+                    
+                }
+                function notWell(err) {
+                    alert(err)
+                }
+            }
+            //---------Delete-Users------------
+
+            $scope.doDelete=function(email)
+            {
+               // alert(email)
+
+               
+               let url="/del-one?email="+email;
+               $http.get(url).then(allIsWell , notWell);
+               function allIsWell(response)
+               {
+                  // alert(response.data);
+                   $scope.getAllUsers();
+               }
+               function notWell(err)
+               {
+                   alert(err)
+               }
+            }
+        })
+    </script>
+    <style>
+        td{
+            text-align: center;
+            width:250;
+            
+            
+        }
+        th
+        {
+            text-align: center;
+        }
+        body
+        {
+            background-color: lightgrey;
+        }
+    </style>
+</head>
+
+<body ng-app="myModule" ng-controller="myController">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top">
+       
+
+        <img src="pics/conn.webp" style="width: 50px; height: 50px; border-radius: 50%;">
+        <font
+            style="font-size: 30px;font-family:  'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; color: darkblue;">
+            <center>
+              <b>  &nbsp; &nbsp;CONNEXUS</b>
+            </center>
+        </font>
+
+</nav><br><br><br>
+    <center>
+        <input type="button" class="btn btn-success" value="Fetch All Users" style="margin-top: 20px;"
+            ng-click="getAllUsers();">
+    </center>
+    <center>
+        <div class="container" style="margin-top: 30px;">
+            <table  class="table table-bordered border-primary"  border="3px solid"  >
+                <tr>
+                    <th >
+                        Sr. No
+                    </th>
+                    <th>
+                        <center>Email-Id</center>
+                    </th>
+                    <th>
+                        <center>User-Type</center>
+                    </th>
+                    <th>
+                        <center>Status</center>
+                    </th>
+                    <th>
+                        <center>Buttons</center>
+                    </th>
+
+                </tr>
+                <tr ng-repeat="ob in jsonArrayAll">
+                    <td class="align-middle">{{ $index+1 }}</td>
+                    <td class="align-middle">{{ ob.email }}</td>
+                    <td class="align-middle">{{ ob.utype }}</td>
+                    <td class="align-middle">{{ ob.status }}</td>
+                    <td class="align-middle">
+
+                        <input type="button" class="btn btn-danger" value="Block" ng-click="doBlock(ob.email);">
+                        <input type="button" class="btn btn-primary" value="Resume" ng-click="doResume(ob.email);">
+                        <input type="button" class="btn btn-warning" value="Delete" ng-click="doDelete(ob.email);">
+
+
+                    </td>
+
+                </tr>
+            </table>
+        </div>
+    </center>
+
+</body>
+
+</html>

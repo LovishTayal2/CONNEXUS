@@ -1,0 +1,514 @@
+<html>
+
+<head>
+    <title>Index</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function () {
+            //------------Email-Validation------------
+            $("#txtEmail").blur(function () {
+                var pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+                let emal = $("#txtEmail").val();
+                //alert(emal)
+
+                if (pattern.test(emal) == true) {
+                    $("#msgEmail").html("Valid Format");
+                    return;
+                }
+                else {
+                    $("#msgEmail").html("Invalid Format");
+                    return;
+                }
+
+            })
+            //---------Password-Validation------------
+            $("#txtPwd").keyup(function () {
+                var re = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,}$/;
+                let psa = $("#txtPwd").val();
+                if (re.test(psa) == true)
+                    $("#spw").html("Strong Pwd");
+                else
+                    $("#spw").html("Weak Pwd");
+
+
+            });
+            //-------login-email-------validation------
+            $("#loginEmail").blur(function () {
+                var pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+                let emal = $("#loginEmail").val();
+                //alert(emal)
+
+                if (pattern.test(emal) == true) {
+                    $("#msgloginemail").html("Valid Format");
+                    return;
+                }
+                else {
+                    $("#msgloginemail").html("Invalid Format");
+                    return;
+                }
+
+            })
+            //---------login--Password-Validation------------
+            $("#loginPwd").keyup(function () {
+                var re = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,}$/;
+                let psa = $("#loginPwd").val();
+                if (re.test(psa) == true)
+                    $("#msgloginpwd").html("Strong Pwd");
+                else
+                    $("#msgloginpwd").html("Weak Pwd");
+
+
+            });
+            //--------------SignUp--------------------
+            $("#btnsignup").click(function () {
+                let obj = {
+                    type: "get",
+                    url: "/users-signup-process",
+                    data: {
+                        txtEmail: $("#txtEmail").val(),
+                        txtPwd: $("#txtPwd").val(),
+                        usertype: $("#usertype").val(),
+
+                    }
+                }
+                $.ajax(obj).done(function (resp) {
+                    $("#errsign").html(resp);
+
+                })
+                    .fail(function (err) {
+                        alert(err.statusText);
+                    })
+            })
+            //---------------Login---------------------
+            $("#btnlogin").click(function () {
+                let obj = {
+                    type: "get",
+                    url: "/users-login-process",
+                    data: {
+                        loginEmail: $("#loginEmail").val(),
+                        loginPwd: $("#loginPwd").val(),
+
+
+                    }
+
+                }
+                $.ajax(obj).done(function (resultary) {
+                    alert(resultary);
+                    $("#errlogin").html("...................." + resultary + ".....................");
+                    if (resultary === "Influencer") {
+                        location.href = "Inf-Dash.html";
+                        localStorage.setItem("activeUser", $("#loginEmail").val());
+                    }
+                    else if (resultary === "Collaborator") {
+                        location.href = "client-dash.html";
+                        localStorage.setItem("activeUser", $("#loginEmail").val());
+                    }
+                    else if(resultary==="Admin")
+                    {
+                        location.href = "Admin-Dash.html";
+                    }
+                    else
+                    {
+
+                    }
+                    
+                        
+                    
+                    
+                    
+
+
+                })
+                    .fail(function (err) {
+                        alert(err.statusText);
+                    })
+            })
+            //----------------------Forgot Password----------------------
+            $("#btnforgot").click(function () {
+                let obj = {
+                    type: "get",
+                    url: "/forgot-pwd-process",
+                    data: {
+                        loginEmail: $("#loginEmail").val(),
+                    }
+                }
+
+                $.ajax(obj).done(function (resultary) {
+                    $("#errforgot").html(resultary);
+
+
+                })
+                    .fail(function (err) {
+                        alert(err.statusText);
+                    })
+            })
+
+        })
+    </script>
+    <style>
+        span {
+            color: red;
+        }
+        .card
+        {
+            border: 2px black solid;
+           /* background-color:;*/
+            
+        }
+        .card-title
+        {
+            color: blue;
+        }
+        #icon {
+            padding: 10px;
+            background-color: darkgreen;
+            color: #fff;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            position: fixed;
+            bottom: 10px;
+            right: 30px;
+        }
+        .card-img-top
+        {
+            transition: ease all 1s;
+        }
+        .card-img-top:hover{
+            transform: scale(1.7);
+            transition: ease all 1s;
+        }
+        .card-text
+        {
+            font-family: 'Times New Roman', Times, serif;
+        }
+        .card-title
+        {
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        }
+        body
+        {
+            background-color: floralwhite;
+        }
+      
+    </style>
+
+</head>
+
+<body id="st">
+    <a href="#st">
+        <div id="icon">
+          <center>  <i class="fa-solid fa-up-long fa-bounce" style="color: black; font-size: 50px;"></i> </center>
+        </div>
+    </a>
+    <div class="row">
+        <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top">
+
+
+            <img src="pics/conn.webp" style="width: 50px; height: 50px; border-radius: 50%; margin-left: 8px;">
+            <font
+                style="font-size: 30px;font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; color: darkblue;">
+           <b>  <center>
+                    &nbsp; &nbsp;CONNEXUS
+                </center>
+            </b>   
+
+            </font>
+            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+            &nbsp;
+            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+            &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+            &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+            &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+            &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                data-bs-target="#signupmodal">SignUp</button>
+            &nbsp; &nbsp;
+            <button type="button" class="btn btn-outline-success" data-bs-toggle="modal"
+                data-bs-target="#modallogin">Login</button> &nbsp; &nbsp;
+           <a href="#ours"><button type="button" class="btn btn-outline-secondary">Our Services</button></a>&nbsp; &nbsp;
+          <a href="#ourt"><button type="button" class="btn btn-outline-info">Our Team</button> </a> &nbsp; &nbsp; 
+           <a href="#ourr"> <button type="button" class="btn btn-outline-danger">Reach Us</button></a>
+
+        </nav><br>
+        <!------------------------------------------------->
+        <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
+                    aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
+                    aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
+                    aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active" data-bs-interval="2000">
+                    <img src="pics/inf-finl.png" class="d-block w-100" alt="..." style="height:750px;">
+
+                </div>
+                <div class="carousel-item" data-bs-interval="2000">
+                    <img src="pics/illustration-influencer-blogger_7737-1763.avif" class="d-block w-100" alt="..." style="height:750px;">
+
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
+                data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
+                data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+    <br id="ours">
+    <div class="row fs-1" style="background-color: lightblue;font-family:serif">
+        <center>
+            Our Services
+
+        </center>
+    </div>
+    <br id="ourt">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card" style="width: 18rem;">
+                        <img src="pics/search and dis.jpg" class="card-img-top" style="height: 170px;" alt="...">
+                        <div class="card-body">
+                            <h4 class="card-title">Influencer Search And Discovery</h4>
+                            <p class="card-text" style="font-size: 20px;">Advanced search filters and
+                                influencer recommendations based on user preferences</p>
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-6">
+                    <div class="card" style="width: 18rem;">
+                        <img src="pics/clb.avif" class="card-img-top" style="height:200px;" alt="...">
+                        <div class="card-body">
+                          <h4 class="card-title">Collaborations</h4> 
+                            <p class="card-text"style=  "font-size: 20px;">Communication tools for interacting with brands and Content Submission
+                            </p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+    
+    <br id="ourr">
+
+    <div class="row fs-1" style="background-color: lightblue;font-family:serif">
+        <center>
+            Our Team
+
+        </center>
+    </div>    
+        <br>
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card" style="width: 18rem;">
+                      <center>    <img src="pics/WhatsApp Image 2024-07-16 at 6.19.48 PM.jpeg"  style="width: 200px;height:200px;border-radius:50%;border:5px black solid" class="card-img-top" alt="..."></center>  
+                            <div class="card-body">
+                              <center> <h5 class="card-title">Under the Guidance of:
+                                     <br>
+                               Rajesh Bansal <br>
+                               
+                                </h5>
+                                <font style="font-size: 22px; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">(Author of Real Java)</font>
+                            </center> 
+                               
+    
+                            </div>
+                        </div>
+                    </div>
+    
+    
+                    <div class="col-md-6">
+                        <div class="card" style="width: 18rem;">
+                         <center>   <img src="pics/WhatsApp Image 2024-07-21 at 2.24.47 PM.jpeg"  style="width: 200px;height:200px;border-radius:50%;border:5px black solid" class="card-img-top" alt="Error"></center>
+                            <div class="card-body">
+                                <center><h5 class="card-title">Developed By : <br>
+                                    Lovish Tayal
+                                </h5>
+                                <font style="font-size: 22px; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">(BTECH-2022-2026)</font>
+                                </center>
+                                
+                                
+    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+    
+    
+        </div>
+        <br>
+        
+        <div class="row fs-1" style="background-color: lightblue;font-family:serif">
+            <center>
+                Reach Us
+    
+            </center>
+        </div>   
+        <br>
+    <center>   <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7015.918352009266!2d77.584198!3d28.450647!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cbf94deb6bc39%3A0x7ba6bedc9a2b537f!2sBennett%20University%20(Times%20of%20India%20Group)!5e0!3m2!1sen!2sin!4v1721235666465!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></center> 
+        <br>
+        <div class="row fs-1" style="background-color: black; color: white;">
+            <center>
+                <i class="fa-regular fa-copyright" style="color: white;"></i> 2024 All Rights Reserved
+    
+            </center>
+        </div> 
+        
+        
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!---------------------SignUp Modal------------------------------------>
+
+
+    <div class="modal fade" id="signupmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">SignUp Here</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="get">
+                        <div class="mb-3">
+                            <label for="" class="form-label">Email address</label>
+                            <input type="email" class="form-control" id="txtEmail" name="txtEmail"
+                                aria-describedby="emailHelp">
+                            <span id="msgEmail"></span>
+
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputPassword1" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="txtPwd" name="txtPwd">
+                            <span id="spw"></span>
+                        </div>
+                        <div>
+                            Type of User<br>
+                            <select class="form-select" aria-label="Default select example" name="usertype"
+                                id="usertype">
+
+                                <option value="none">Select</option>
+                                <option value="Influencer">Influencer</option>
+                                <option value="Collaborator">Collaborator</option>
+                            </select>
+                        </div>
+
+                        <br>
+                 <center>      <span id="errsign"></span> </center> 
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-success" value="SignUp" id="btnsignup" value="btnsignup">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!---------------Login Modal--------------------------->
+
+    <div id="modallogin" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Login Here</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="get">
+                    <center>   <span id="errlogin"></span></center> 
+                        <p>
+                        <div class="form-floating mb-3">
+
+
+                            <input type="email" class="form-control" id="loginEmail" name="loginEmail"
+                                placeholder="name@example.com">
+                            <label for="floatingInput" id="loginEmail">Email address</label>
+                            <span id="msgloginemail"></span>
+                        </div>
+                        <div class="form-floating">
+                            <input type="password" class="form-control" id="loginPwd" name="loginPwd"
+                                placeholder="Password">
+                            <label for="floatingPassword">Password</label>
+                            <span id="msgloginpwd"></span>
+                        </div>
+                        <br>
+                     <center>   <input type="button" class="btn btn-success" id="btnforgot" name="btnforgot"
+                            value="Forgot Password"></center>
+
+                        <br>
+                     <center>   <span id="errforgot"></span></center>
+
+
+
+
+
+
+                        </p>
+                    </form>
+                </div>
+                <div class="modal-footer">
+
+                    <input type="button" class="btn btn-success" id="btnlogin" name="btnlogin" value="Login">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </center>
+</body>
+
+</html>
