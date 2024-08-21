@@ -24,7 +24,7 @@ app.listen(2002, function () {
 let config = {
     host: "127.0.0.1",
     user: "root",
-    password: "Enter your database password",
+    password: "lovish123",
     database: "project",
     dateStrings: true
 }
